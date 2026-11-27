@@ -5180,3 +5180,14 @@ double-append guard. Workaround used: ranked the cycle's 300 rows in journal/scr
 max |prob - mid| myself (read-only). Ask: a `--no-log` / `--rank-only` mode for collect (or a `rank`
 subcommand), or reword the note to say "read past top 15 from the screener log". Top 15 this cycle were
 13/15 <48h repeats, so this path is the norm, not an edge case.
+
+## 2026-11-27 00:3xZ (FULL, operator machine): core/archive.py fails on Python 3.9 timestamp parsing
+
+`python3 core/archive.py` this cycle printed
+`archive: stopped, a later run retries: Invalid isoformat string: '2026-11-19 18:50:23.34229+00:00'`.
+The operator machine runs Python 3.9.6, where `datetime.fromisoformat` accepts only 3- or 6-digit
+fractional seconds. A 5-digit fraction (`.34229`, likely a Postgres/API timestamp with a trailing
+zero dropped) raises, so the archive will keep failing on this runner for as long as that row is in its
+input, and "a later run retries" will never succeed here. Cloud runners on Python >= 3.11 parse it
+fine, which may be why this has not surfaced. Ask: normalise the fraction (pad to 6 digits)
+or parse with a tolerant helper in core/archive.py. Per CYCLE.md 6b I did not retry or work around it.
