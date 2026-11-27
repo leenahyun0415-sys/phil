@@ -4836,6 +4836,9 @@ dBrier +0.045. The bar kept a losing No off the ledger. No change.
 **Re-open condition.** Rows skipped under this bar are graded as their own
 slice at each deep retro. When 10 have settled, lift the bar if their
 forecast brier_delta is at or below 0; keep it otherwise. Until then, the
+Re-open check (RETRO-20261127-0105): 10 live rows settled, forecast
+brier_delta +0.0154 (score.py); counterfactual 14 rows incl. superseded,
+7W/7L, -$20.76, dBrier +0.028. Above 0, so the bar stays.
 DEEP-2026-09-16 allocation rule already says these rows get research time
 only with a mechanical anchor, so the bar should cost few research slots.
 

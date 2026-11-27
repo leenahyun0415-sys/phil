@@ -5191,3 +5191,16 @@ zero dropped) raises, so the archive will keep failing on this runner for as lon
 input, and "a later run retries" will never succeed here. Cloud runners on Python >= 3.11 parse it
 fine, which may be why this has not surfaced. Ask: normalise the fraction (pad to 6 digits)
 or parse with a tolerant helper in core/archive.py. Per CYCLE.md 6b I did not retry or work around it.
+
+## 2026-11-27 01:02Z: unattended operator ticks are blocked by command approval prompts
+
+Symptom: the headless session on the operator machine needs approval, which nobody can give, for
+ordinary read commands. The 00:14Z FULL could not run `strategy/tools/reconcile.py` or quote
+tools. This 01:00Z LIGHT tick was refused `printenv PHIL_LEASE` / `PHIL_PUSH_BY_LOOP` (so the
+runner variables CYCLE.md steps 0 and 9 branch on cannot be read, and I inferred them from
+`journal/lease.json` holder `operator`, started 01:00:06Z), the documented COUNT COMMAND v6
+(`awk` with a `$(date ...)` substitution; it also uses GNU `date -d`, which macOS lacks), and
+compound `;` commands. `python3 core/...` and plain `git` reads worked.
+Ask: allowlist these in the permission settings loop.sh runs with (`printenv PHIL_*`,
+`python3 strategy/tools/*`, a pacing-count script), or state PHIL_LEASE / PHIL_PUSH_BY_LOOP in
+the cycle prompt. I did not work around any refusal for the tools or variables.
